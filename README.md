@@ -17,7 +17,20 @@ A highly customizable, animated notification system for Flutter applications wit
 - 🔍 Debug mode support
 
 ## Installation
-Add this notification system to your project by copying the `notification_service.dart` file to your lib folder.
+
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  ace_toast:
+    git:
+      url: https://github.com/lordace-coder/ace_toast.git
+```
+
+Then run:
+```bash
+flutter pub get
+```
 
 ## Basic Usage
 
