@@ -22,9 +22,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  ace_toast:
-    git:
-      url: https://github.com/lordace-coder/ace_toast.git
+  ace_toast: 0.0.1
 ```
 
 Then run:
