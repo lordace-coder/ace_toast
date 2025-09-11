@@ -384,17 +384,20 @@ class _NotificationWidgetState extends State<_NotificationWidget>
     return widget.config.iconColor ?? theme.primaryColor;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = _getTheme(widget.type);
-    final backgroundColor = _getBackgroundColor(widget.type, theme);
-    final borderColor = _getBorderColor(widget.type, theme);
-    final textColor = _getTextColor(widget.type, theme);
-    final iconColor = _getIconColor(widget.type, theme);
+ @override
+Widget build(BuildContext context) {
+  final theme = _getTheme(widget.type);
+  final backgroundColor = _getBackgroundColor(widget.type, theme);
+  final borderColor = _getBorderColor(widget.type, theme);
+  final textColor = _getTextColor(widget.type, theme);
+  final iconColor = _getIconColor(widget.type, theme);
 
-    return Material(
-      color: Colors.transparent,
-      child: SafeArea(
+  return Material(
+    color: Colors.transparent,
+    child: SafeArea(
+      child: IgnorePointer(
+        // Ignore pointer events for the entire overlay...
+        ignoring: true,
         child: SlideTransition(
           position: _offsetAnimation,
           child: FadeTransition(
@@ -409,60 +412,64 @@ class _NotificationWidgetState extends State<_NotificationWidget>
                   constraints: BoxConstraints(
                     maxWidth: widget.config.maxWidth ?? 600,
                   ),
-                  child: GestureDetector(
-                    onTap: _dismissNotification,
-                    child: Dismissible(
-                      key: Key(
-                          'notification_${DateTime.now().millisecondsSinceEpoch}'),
-                      direction: widget.config.dismissDirection,
-                      onDismissed: (_) => widget.onDismiss(),
-                      child: Material(
-                        elevation: widget.config.elevation,
-                        borderRadius:
-                            BorderRadius.circular(widget.config.borderRadius),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: backgroundColor,
-                            border: Border.all(color: borderColor),
-                            borderRadius: BorderRadius.circular(
-                                widget.config.borderRadius),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding: widget.config.padding,
-                                child: Row(
-                                  children: [
-                                    FaIcon(
-                                      _getIcon(),
-                                      color: iconColor,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        widget.message,
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontSize: 14,
+                  child: IgnorePointer(
+                    // ...except for the actual notification card
+                    ignoring: false,
+                    child: GestureDetector(
+                      onTap: _dismissNotification,
+                      child: Dismissible(
+                        key: Key(
+                            'notification_${DateTime.now().millisecondsSinceEpoch}'),
+                        direction: widget.config.dismissDirection,
+                        onDismissed: (_) => widget.onDismiss(),
+                        child: Material(
+                          elevation: widget.config.elevation,
+                          borderRadius:
+                              BorderRadius.circular(widget.config.borderRadius),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: backgroundColor,
+                              border: Border.all(color: borderColor),
+                              borderRadius: BorderRadius.circular(
+                                  widget.config.borderRadius),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: widget.config.padding,
+                                  child: Row(
+                                    children: [
+                                      FaIcon(
+                                        _getIcon(),
+                                        color: iconColor,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          widget.message,
+                                          style: TextStyle(
+                                            color: textColor,
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              if (widget.config.showProgressIndicator &&
-                                  widget.duration != null)
-                                LinearProgressIndicator(
-                                  value: _progress,
-                                  backgroundColor: borderColor.withOpacity(0.2),
-                                  color: widget.config.progressIndicatorColor ??
-                                      theme.primaryColor,
-                                  minHeight:
-                                      widget.config.progressIndicatorHeight,
-                                ),
-                            ],
+                                if (widget.config.showProgressIndicator &&
+                                    widget.duration != null)
+                                  LinearProgressIndicator(
+                                    value: _progress,
+                                    backgroundColor: borderColor.withOpacity(0.2),
+                                    color: widget.config.progressIndicatorColor ??
+                                        theme.primaryColor,
+                                    minHeight:
+                                        widget.config.progressIndicatorHeight,
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -474,6 +481,7 @@ class _NotificationWidgetState extends State<_NotificationWidget>
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
