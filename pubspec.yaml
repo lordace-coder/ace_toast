@@ -1,7 +1,11 @@
 name: ace_toast
-description: "A new Flutter package project."
+description: >
+  A simple and customizable Flutter toast notification package.
+  Ace Toast makes it easy to display beautiful in-app messages,
+  alerts, and notifications with flexible styling, positioning,
+  and animations.
 version: 0.0.1
-homepage:
+homepage: "https://cathsapp.ng"
 
 environment:
   sdk: ^3.5.2
